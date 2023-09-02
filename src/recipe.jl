@@ -6,6 +6,7 @@ Makie.@recipe(TreeMap) do scene
         specular = Makie.Vec3f(0),
         labeller = (indexstack, node) -> "$indexstack",
         to_colorvalue = (node) -> rand(1:7),
+        colormap = :viridis,
     )
 end
 
@@ -73,7 +74,8 @@ function Makie.plot!(tm::TreeMap)
     m = Makie.GeometryBasics.Mesh(vertices, faces)
     max_z = maximum(x -> x[3], vertices)
 
-    msh = Makie.mesh!(tm, m; color = colors, shininess = 0, diffuse = Makie.Vec3f(1.0), specular = Makie.Vec3f(0))
+    msh = Makie.mesh!(tm, m; color = colors, shininess = 0, diffuse = Makie.Vec3f(1.0), specular = Makie.Vec3f(0),
+        colormap = tm.colormap)
     Makie.scale!(msh, Makie.Vec3f(1, 1, 1/max_z))
 
     tm[:_metadata] = (; rectangles, indexstacks, vertices)
